@@ -2078,17 +2078,17 @@ void CGameNetworkManager::ServerStoppedWait()
 		do
 		{
 #ifndef _XBOX
-			RenderManager.StartFrame();
+			//RenderManager.StartFrame();
 #endif
 			result = m_hServerStoppedEvent->WaitForSignal(20);
 			// Tick some simple things
 			ProfileManager.Tick();
 			StorageManager.Tick();
-			InputManager.Tick();
-			RenderManager.Tick();
-			ui.tick();
-			ui.render();
-			RenderManager.Present();
+			//InputManager.Tick();
+			//RenderManager.Tick();
+			//ui.tick();
+			//ui.render();
+			//RenderManager.Present();
 		} while( result == WAIT_TIMEOUT );
 	}
 	else
