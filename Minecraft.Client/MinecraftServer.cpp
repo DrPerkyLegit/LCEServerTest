@@ -2362,6 +2362,8 @@ bool MinecraftServer::chunkPacketManagement_CanSendTo(INetworkPlayer *player)
 {
 	if( player == nullptr ) return false;
 
+	return true;
+
 	int time = GetTickCount();
 	DWORD currentPlayerCount = g_NetworkManager.GetPlayerCount();
 	if( currentPlayerCount == 0 ) return false;

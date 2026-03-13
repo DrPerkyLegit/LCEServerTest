@@ -376,20 +376,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks)
 //						connection->done);
 //				}
 
-				if( dontDelayChunks ||
-					(canSendToPlayer &&
-#ifdef _XBOX_ONE
-					// The network manager on xbox one doesn't currently split data into slow & fast queues - since we can only measure
-					// both together then bytes provides a better metric than count of data items to determine if we should avoid queueing too much up
-					(g_NetworkManager.GetHostPlayer()->GetSendQueueSizeBytes( nullptr, true ) < 8192 )&&
-#elif defined _XBOX
-					(g_NetworkManager.GetHostPlayer()->GetSendQueueSizeMessages( nullptr, true ) < 4 )&&
-#else
-					(connection->countDelayedPackets() < 4 )&&
-					(g_NetworkManager.GetHostPlayer()->GetSendQueueSizeMessages( nullptr, true ) < 4 )&&
-#endif
-					//(tickCount - lastBrupSendTickCount) > (connection->getNetworkPlayer()->GetCurrentRtt()>>4) &&
-					!connection->done) )
+				if( dontDelayChunks || (canSendToPlayer && !connection->done) )
 				{
 					lastBrupSendTickCount = tickCount;
 					okToSend = true;
