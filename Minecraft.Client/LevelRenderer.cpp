@@ -136,7 +136,7 @@ LevelRenderer::LevelRenderer(Minecraft *mc, Textures *textures)
 	culledEntities = 0;
 	chunkFixOffs = 0;
 	frame = 0;
-	repeatList = MemoryTracker::genLists(1);
+	//repeatList = MemoryTracker::genLists(1);
 
 	destroyProgress = 0.0f;
 
@@ -160,95 +160,95 @@ LevelRenderer::LevelRenderer(Minecraft *mc, Textures *textures)
 	this->mc = mc;
 	this->textures = textures;
 
-	chunkLists = MemoryTracker::genLists(getGlobalChunkCount()*2);		// *2 here is because there is one renderlist per chunk here for each of the opaque & transparent layers
-	globalChunkFlags = new unsigned char[getGlobalChunkCount()];
-	memset(globalChunkFlags, 0, getGlobalChunkCount());
+	//chunkLists = MemoryTracker::genLists(getGlobalChunkCount()*2);		// *2 here is because there is one renderlist per chunk here for each of the opaque & transparent layers
+	//globalChunkFlags = new unsigned char[getGlobalChunkCount()];
+	//memset(globalChunkFlags, 0, getGlobalChunkCount());
 
-	starList = MemoryTracker::genLists(4);
+	//starList = MemoryTracker::genLists(4);
 
-	glPushMatrix();
-	glNewList(starList, GL_COMPILE);
-	renderStars();
-	glEndList();
+	//glPushMatrix();
+	//glNewList(starList, GL_COMPILE);
+	//renderStars();
+	//glEndList();
 
 	// 4J added - create geometry for rendering clouds
-	createCloudMesh();
+	//createCloudMesh();
 
-	glPopMatrix();
+	//glPopMatrix();
 
 
 
 	Tesselator *t = Tesselator::getInstance();
-	skyList = starList + 1;
-	glNewList(skyList, GL_COMPILE);
-	glDepthMask(false);				// 4J - added to get depth mask disabled within the command buffer
-	float yy;
-	int s = 64;
-	int d = 256 / s + 2;
-	yy = static_cast<float>(16);
-	for (int xx = -s * d; xx <= s * d; xx += s)
-	{
-		for (int zz = -s * d; zz <= s * d; zz += s)
-		{
-			t->begin();
-			t->vertex(static_cast<float>(xx + 0), (float)( yy), static_cast<float>(zz + 0));
-			t->vertex(static_cast<float>(xx + s), (float)( yy), static_cast<float>(zz + 0));
-			t->vertex(static_cast<float>(xx + s), (float)( yy), static_cast<float>(zz + s));
-			t->vertex(static_cast<float>(xx + 0), (float)( yy), static_cast<float>(zz + s));
-			t->end();
-		}
-	}
-	glEndList();
+	//skyList = starList + 1;
+	//glNewList(skyList, GL_COMPILE);
+	//glDepthMask(false);				// 4J - added to get depth mask disabled within the command buffer
+	//float yy;
+	//int s = 64;
+	//int d = 256 / s + 2;
+	//yy = static_cast<float>(16);
+	//for (int xx = -s * d; xx <= s * d; xx += s)
+	//{
+	//	for (int zz = -s * d; zz <= s * d; zz += s)
+	//	{
+	//		t->begin();
+	//		t->vertex(static_cast<float>(xx + 0), (float)( yy), static_cast<float>(zz + 0));
+	//		t->vertex(static_cast<float>(xx + s), (float)( yy), static_cast<float>(zz + 0));
+	//		t->vertex(static_cast<float>(xx + s), (float)( yy), static_cast<float>(zz + s));
+	//		t->vertex(static_cast<float>(xx + 0), (float)( yy), static_cast<float>(zz + s));
+	//		t->end();
+	//	}
+	//}
+	//glEndList();
 
-	darkList = starList + 2;
-	glNewList(darkList, GL_COMPILE);
-	yy = -static_cast<float>(16);
-	t->begin();
-	for (int xx = -s * d; xx <= s * d; xx += s)
-	{
-		for (int zz = -s * d; zz <= s * d; zz += s)
-		{
-			t->vertex(static_cast<float>(xx + s), (float)( yy), static_cast<float>(zz + 0));
-			t->vertex(static_cast<float>(xx + 0), (float)( yy), static_cast<float>(zz + 0));
-			t->vertex(static_cast<float>(xx + 0), (float)( yy), static_cast<float>(zz + s));
-			t->vertex(static_cast<float>(xx + s), (float)( yy), static_cast<float>(zz + s));
-		}
-	}
-	t->end();
-	glEndList();
+	//darkList = starList + 2;
+	//glNewList(darkList, GL_COMPILE);
+	//yy = -static_cast<float>(16);
+	//t->begin();
+	//for (int xx = -s * d; xx <= s * d; xx += s)
+	//{
+	//	for (int zz = -s * d; zz <= s * d; zz += s)
+	//	{
+	//		t->vertex(static_cast<float>(xx + s), (float)( yy), static_cast<float>(zz + 0));
+	//		t->vertex(static_cast<float>(xx + 0), (float)( yy), static_cast<float>(zz + 0));
+	//		t->vertex(static_cast<float>(xx + 0), (float)( yy), static_cast<float>(zz + s));
+	//		t->vertex(static_cast<float>(xx + s), (float)( yy), static_cast<float>(zz + s));
+	//	}
+	//}
+	//t->end();
+	//glEndList();
 
 	// HALO ring for the texture pack
-	{
-		const unsigned int ARC_SEGMENTS = 50;
-		const float VERTICAL_OFFSET = HALO_RING_RADIUS * 999/1000; // How much we raise the circle origin to make the circle curve back towards us
-		const int WIDTH = 10;
-		const float ARC_RADIANS = 2.0f*PI/ARC_SEGMENTS;
-		const float HALF_ARC_SEG = ARC_SEGMENTS/2;
-		const float WIDE_ARC_SEGS = ARC_SEGMENTS/8;
-		const float WIDE_ARC_SEGS_SQR = WIDE_ARC_SEGS * WIDE_ARC_SEGS;
+	//{
+	//	const unsigned int ARC_SEGMENTS = 50;
+	//	const float VERTICAL_OFFSET = HALO_RING_RADIUS * 999/1000; // How much we raise the circle origin to make the circle curve back towards us
+	//	const int WIDTH = 10;
+	//	const float ARC_RADIANS = 2.0f*PI/ARC_SEGMENTS;
+	//	const float HALF_ARC_SEG = ARC_SEGMENTS/2;
+	//	const float WIDE_ARC_SEGS = ARC_SEGMENTS/8;
+	//	const float WIDE_ARC_SEGS_SQR = WIDE_ARC_SEGS * WIDE_ARC_SEGS;
 
-		float u = 0.0f;
-		float width = WIDTH;
+	//	float u = 0.0f;
+	//	float width = WIDTH;
 
-		haloRingList = starList + 3;
-		glNewList(haloRingList, GL_COMPILE);
-		t->begin(GL_TRIANGLE_STRIP);
-		t->color(0xffffff);
+	//	haloRingList = starList + 3;
+	//	glNewList(haloRingList, GL_COMPILE);
+	//	t->begin(GL_TRIANGLE_STRIP);
+	//	t->color(0xffffff);
 
-		for(unsigned int i = 0; i <= ARC_SEGMENTS; ++i)
-		{
-			float DIFF = abs(i - HALF_ARC_SEG);
-			if(DIFF<(HALF_ARC_SEG-WIDE_ARC_SEGS)) DIFF = 0;
-			else DIFF-=(HALF_ARC_SEG-WIDE_ARC_SEGS);
-			width = 1 + ( (DIFF * DIFF) / (WIDE_ARC_SEGS_SQR) ) * WIDTH;
-			t->vertexUV((HALO_RING_RADIUS * cos(i*ARC_RADIANS)) - VERTICAL_OFFSET, (HALO_RING_RADIUS * sin(i*ARC_RADIANS)), 0-width, u, 0);
-			t->vertexUV((HALO_RING_RADIUS * cos(i*ARC_RADIANS)) - VERTICAL_OFFSET, (HALO_RING_RADIUS * sin(i*ARC_RADIANS)), 0+width, u, 1);
-			//--u;
-			u -= 0.25;
-		}
-		t->end();
-		glEndList();
-	}
+	//	for(unsigned int i = 0; i <= ARC_SEGMENTS; ++i)
+	//	{
+	//		float DIFF = abs(i - HALF_ARC_SEG);
+	//		if(DIFF<(HALF_ARC_SEG-WIDE_ARC_SEGS)) DIFF = 0;
+	//		else DIFF-=(HALF_ARC_SEG-WIDE_ARC_SEGS);
+	//		width = 1 + ( (DIFF * DIFF) / (WIDE_ARC_SEGS_SQR) ) * WIDTH;
+	//		t->vertexUV((HALO_RING_RADIUS * cos(i*ARC_RADIANS)) - VERTICAL_OFFSET, (HALO_RING_RADIUS * sin(i*ARC_RADIANS)), 0-width, u, 0);
+	//		t->vertexUV((HALO_RING_RADIUS * cos(i*ARC_RADIANS)) - VERTICAL_OFFSET, (HALO_RING_RADIUS * sin(i*ARC_RADIANS)), 0+width, u, 1);
+	//		//--u;
+	//		u -= 0.25;
+	//	}
+	//	t->end();
+	//	glEndList();
+	//}
 
 	Chunk::levelRenderer = this;
 

@@ -405,7 +405,7 @@ void Minecraft::init()
 
 	//    openGLCapabilities = new OpenGLCapabilities();	// 4J - removed
 
-	//levelRenderer = new LevelRenderer(this, textures);
+	levelRenderer = new LevelRenderer(this, textures);
 	//textures->register(&TextureAtlas::LOCATION_BLOCKS, new TextureAtlas(Icon::TYPE_TERRAIN, TN_TERRAIN));
 	//textures->register(&TextureAtlas::LOCATION_ITEMS, new TextureAtlas(Icon::TYPE_ITEM, TN_GUI_ITEMS));
 	//textures->stitch();
