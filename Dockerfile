@@ -1,3 +1,3 @@
 FROM scottyhardy/docker-wine:latest
 
-ENTRYPOINT ["wine", "Minecraft.Server.exe"]
+ENTRYPOINT ["wineconsole", "--backend=curses", "Minecraft.Server.exe"]
