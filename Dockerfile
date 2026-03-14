@@ -7,4 +7,4 @@ WORKDIR /app
 
 COPY . .
 
-ENTRYPOINT ["/bin/bash", "-c", "echo 'Container started'; ls -la; docker-wine ./Minecraft.Server.exe"]
+ENTRYPOINT ["/bin/bash", "-c", "echo Container started; ls -la; /usr/bin/docker-wine ./server.exe"]
