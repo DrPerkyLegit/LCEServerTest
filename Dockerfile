@@ -1,3 +1,8 @@
 FROM scottyhardy/docker-wine:latest
 
-ENTRYPOINT ["wineconsole", "--backend=curses", "Minecraft.Server.exe"]
+ENV DISPLAY=:0
+ENV XDG_RUNTIME_DIR=/tmp
+
+RUN xvfb-run wineboot
+
+ENTRYPOINT ["xvfb-run", "-a", "wine", "Minecraft.Server.exe"]
