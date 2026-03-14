@@ -7,4 +7,4 @@ WORKDIR /app
 
 COPY . .
 
-ENTRYPOINT ["/bin/bash", "-c", "echo Container started; ls -la; /usr/bin/docker-wine ./server.exe"]
+ENTRYPOINT ["/bin/bash", "-c", "echo Container started; which docker-wine; find / -name docker-wine 2>/dev/null"]
