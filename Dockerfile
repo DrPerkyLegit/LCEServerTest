@@ -1,5 +1,7 @@
 FROM scottyhardy/docker-wine:latest
 
-ENV XDG_RUNTIME_DIR=/tmp
+COPY . .
 
-ENTRYPOINT ["docker-wine", "Minecraft.Server.exe"]
+RUN ls -la
+
+ENTRYPOINT ["sleep", "infinity"]
