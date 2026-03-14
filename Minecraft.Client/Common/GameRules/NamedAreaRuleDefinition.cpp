@@ -42,40 +42,40 @@ void NamedAreaRuleDefinition::addAttribute(const wstring &attributeName, const w
 	{
 		m_name = attributeValue;
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"NamedAreaRuleDefinition: Adding parameter name=%ls\n",m_name.c_str());
+		//wprintf(L"NamedAreaRuleDefinition: Adding parameter name=%ls\n",m_name.c_str());
 #endif
 	}
 	else if(attributeName.compare(L"x0") == 0)
 	{
 		m_area->x0 = _fromString<int>(attributeValue);
-		app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter x0=%f\n",m_area->x0);
+		//app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter x0=%f\n",m_area->x0);
 	}
 	else if(attributeName.compare(L"y0") == 0)
 	{
 		m_area->y0 = _fromString<int>(attributeValue);
 		if(m_area->y0 < 0) m_area->y0 = 0;
-		app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter y0=%f\n",m_area->y0);
+		//app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter y0=%f\n",m_area->y0);
 	}
 	else if(attributeName.compare(L"z0") == 0)
 	{
 		m_area->z0 = _fromString<int>(attributeValue);
-		app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter z0=%f\n",m_area->z0);
+		//app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter z0=%f\n",m_area->z0);
 	}
 	else if(attributeName.compare(L"x1") == 0)
 	{
 		m_area->x1 = _fromString<int>(attributeValue);
-		app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter x1=%f\n",m_area->x1);
+		//app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter x1=%f\n",m_area->x1);
 	}
 	else if(attributeName.compare(L"y1") == 0)
 	{
 		m_area->y1 = _fromString<int>(attributeValue);
 		if(m_area->y1 < 0) m_area->y1 = 0;
-		app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter y1=%f\n",m_area->y1);
+		//app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter y1=%f\n",m_area->y1);
 	}
 	else if(attributeName.compare(L"z1") == 0)
 	{
 		m_area->z1 = _fromString<int>(attributeValue);
-		app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter z1=%f\n",m_area->z1);
+		//app.DebugPrintf("NamedAreaRuleDefinition: Adding parameter z1=%f\n",m_area->z1);
 	}
 	else
 	{

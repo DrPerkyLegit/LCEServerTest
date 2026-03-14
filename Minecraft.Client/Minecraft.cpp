@@ -319,8 +319,6 @@ void Minecraft::init()
 	levelSource = new McRegionLevelStorageSource(File(workingDirectory, L"saves"));
 	//        levelSource = new MemoryLevelStorageSource();
 	options = new Options(this, workingDirectory);
-	skins = new TexturePackRepository(workingDirectory, this);
-	skins->addDebugPacks();
 	textures = new Textures(skins, options);
 	//renderLoadingScreen();
 

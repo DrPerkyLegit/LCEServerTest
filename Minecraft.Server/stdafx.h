@@ -1,4 +1,4 @@
 #pragma once
 
 #include <Windows.h>
-#include "../Minecraft.Client/Windows64/Windows64_Minecraft.h"
+#include "../Minecraft.Client/ServerIncludes/Windows64_ServerLink.h"

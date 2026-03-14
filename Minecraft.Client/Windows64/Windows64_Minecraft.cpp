@@ -45,6 +45,7 @@
 #include "Network\WinsockNetLayer.h"
 #include "Windows64_Xuid.h"
 #include "Windows64_Minecraft.h"
+#include "../../Minecraft.Server/Utils/Logger.h"
 
 // Forward-declare the internal Renderer class and its global instance from 4J_Render_PC_d.lib.
 // C4JRender (RenderManager) is a stateless wrapper — all D3D state lives in InternalRenderManager.
@@ -65,42 +66,8 @@ extern Renderer InternalRenderManager;
 #define NUM_PROFILE_SETTINGS 4
 DWORD dwProfileSettingsA[NUM_PROFILE_VALUES] = { 0,0,0,0,0 };
 
-
-
 char g_Win64Username[17] = { 0 };
 wchar_t g_Win64UsernameW[17] = { 0 };
-
-
-
-static BOOL WINAPI HeadlessServerCtrlHandler(DWORD ctrlType)
-{
-	switch (ctrlType)
-	{
-	case CTRL_C_EVENT:
-	case CTRL_BREAK_EVENT:
-	case CTRL_CLOSE_EVENT:
-	case CTRL_SHUTDOWN_EVENT:
-		app.m_bShutdown = true;
-		MinecraftServer::HaltServer();
-		return TRUE;
-	default:
-		return FALSE;
-	}
-}
-
-static void SetupHeadlessServerConsole()
-{
-	if (AllocConsole())
-	{
-		FILE* stream = nullptr;
-		freopen_s(&stream, "CONIN$", "r", stdin);
-		freopen_s(&stream, "CONOUT$", "w", stdout);
-		freopen_s(&stream, "CONOUT$", "w", stderr);
-		SetConsoleTitleA("Minecraft Server");
-	}
-
-	SetConsoleCtrlHandler(HeadlessServerCtrlHandler, TRUE);
-}
 
 //#define MEMORY_TRACKING
 
@@ -123,8 +90,8 @@ void SeedEditBox() { }
 
 static Minecraft* InitialiseMinecraftRuntime()
 {
-	app.loadMediaArchive();
-	app.loadStringTable();
+	//app.loadMediaArchive();
+	//app.loadStringTable();
 
 	ProfileManager.Initialise(TITLEID_MINECRAFT,
 		app.m_dwOfferID,
@@ -207,7 +174,7 @@ static int HeadlessServerConsoleThreadProc(void* lpParameter)
 
 static int RunHeadlessServer()
 {
-	SetupHeadlessServerConsole();
+	Logger::Info("test log");
 
 	Settings serverSettings(new File(L"server.properties"));
 	const wstring configuredBindIp = serverSettings.getString(L"server-ip", L"");

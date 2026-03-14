@@ -48,7 +48,7 @@ void GameRuleDefinition::getChildren(vector<GameRuleDefinition *> *children) {}
 GameRuleDefinition *GameRuleDefinition::addChild(ConsoleGameRules::EGameRuleType ruleType)
 {
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"GameRuleDefinition: Attempted to add invalid child rule - %d\n", ruleType );
+		//wprintf(L"GameRuleDefinition: Attempted to add invalid child rule - %d\n", ruleType );
 #endif
 	return nullptr;
 }
@@ -59,25 +59,25 @@ void GameRuleDefinition::addAttribute(const wstring &attributeName, const wstrin
 	{
 		m_descriptionId = attributeValue;
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"GameRuleDefinition: Adding parameter descriptionId=%ls\n",m_descriptionId.c_str());
+		//wprintf(L"GameRuleDefinition: Adding parameter descriptionId=%ls\n",m_descriptionId.c_str());
 #endif
 	}
 	else if(attributeName.compare(L"promptName") == 0)
 	{
 		m_promptId = attributeValue;
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"GameRuleDefinition: Adding parameter m_promptId=%ls\n",m_promptId.c_str());
+		//wprintf(L"GameRuleDefinition: Adding parameter m_promptId=%ls\n",m_promptId.c_str());
 #endif
 	}
 	else if(attributeName.compare(L"dataTag") == 0)
 	{
 		m_4JDataValue = _fromString<int>(attributeValue);
-		app.DebugPrintf("GameRuleDefinition: Adding parameter m_4JDataValue=%d\n",m_4JDataValue);
+		//app.DebugPrintf("GameRuleDefinition: Adding parameter m_4JDataValue=%d\n",m_4JDataValue);
 	}
 	else
 	{
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"GameRuleDefinition: Attempted to add invalid attribute: %ls\n", attributeName.c_str());
+		//wprintf(L"GameRuleDefinition: Attempted to add invalid attribute: %ls\n", attributeName.c_str());
 #endif
 	}
 }

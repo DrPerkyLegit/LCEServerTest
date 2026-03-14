@@ -308,7 +308,7 @@
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -787,6 +787,8 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <OutDir>$(ProjectDir)\$(Platform)_$(Configuration)\</OutDir>
+    <IntDir>$(Platform)_$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64EC'">
     <LinkIncremental>true</LinkIncremental>
@@ -5433,6 +5435,7 @@ xcopy /q /y /i /s /e $(ProjectDir)Durango\CU  $(LayoutDir)Image\Loose\CU</Comman
     <ClInclude Include="ResourceLocation.h" />
     <ClInclude Include="ServerCommandDispatcher.h" />
     <ClInclude Include="ServerConnection.h" />
+    <ClInclude Include="ServerIncludes\Windows64_ServerLink.h" />
     <ClInclude Include="ServerInterface.h" />
     <ClInclude Include="ServerPlayerGameMode.h" />
     <ClInclude Include="ServerLevelListener.h" />
@@ -9341,6 +9344,7 @@ xcopy /q /y /i /s /e $(ProjectDir)Durango\CU  $(LayoutDir)Image\Loose\CU</Comman
     <ClCompile Include="ServerChunkCache.cpp" />
     <ClCompile Include="ServerCommandDispatcher.cpp" />
     <ClCompile Include="ServerConnection.cpp" />
+    <ClCompile Include="ServerIncludes\Windows64_ServerLink.cpp" />
     <ClCompile Include="ServerPlayerGameMode.cpp" />
     <ClCompile Include="ServerLevel.cpp" />
     <ClCompile Include="ServerLevelListener.cpp" />

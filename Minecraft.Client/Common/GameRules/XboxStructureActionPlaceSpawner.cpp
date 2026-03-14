@@ -29,7 +29,7 @@ void XboxStructureActionPlaceSpawner::addAttribute(const wstring &attributeName,
 	{
 		m_entityId = attributeValue;
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"XboxStructureActionPlaceSpawner: Adding parameter entity=%ls\n",m_entityId.c_str());
+		//wprintf(L"XboxStructureActionPlaceSpawner: Adding parameter entity=%ls\n",m_entityId.c_str());
 #endif
 	}
 	else
@@ -57,7 +57,7 @@ bool XboxStructureActionPlaceSpawner::placeSpawnerInLevel(StructurePiece *struct
 		shared_ptr<MobSpawnerTileEntity> entity = dynamic_pointer_cast<MobSpawnerTileEntity>(level->getTileEntity( worldX, worldY, worldZ ));
 
 #ifndef _CONTENT_PACKAGE
-		wprintf(L"XboxStructureActionPlaceSpawner - placing a %ls spawner at (%d,%d,%d)\n", m_entityId.c_str(), worldX, worldY, worldZ);
+		//wprintf(L"XboxStructureActionPlaceSpawner - placing a %ls spawner at (%d,%d,%d)\n", m_entityId.c_str(), worldX, worldY, worldZ);
 #endif
 		if( entity != nullptr )
 		{
