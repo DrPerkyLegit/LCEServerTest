@@ -1,5 +1,9 @@
 set(MINECRAFT_SERVER_SOURCES
-	"stdafx.cpp"
+	"Access/ServerAccessor.cpp"
+
+	"Commands/CommandDispatcher.cpp"
+
+	"Storage/GenericStorage.cpp"
+
 	"Application.cpp"
-	"Utils/Logger.cpp"
 )

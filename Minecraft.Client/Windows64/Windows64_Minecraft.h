@@ -1,12 +1,10 @@
 #pragma once
 #include <string>
+#include <functional>
 
 typedef unsigned long long PlayerUID;
 
 class Windows64Minecraft {
 public:
-	static PlayerUID ResolvePersistentXuidFromName(const std::wstring& playerName);
-	static void StartDedicatedServer();
-
-	
+	static void StartDedicatedServer(std::function<void()> pluginload);
 };
