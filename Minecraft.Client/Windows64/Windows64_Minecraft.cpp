@@ -64,8 +64,8 @@ extern Renderer InternalRenderManager;
 #define NUM_PROFILE_SETTINGS 4
 DWORD dwProfileSettingsA[NUM_PROFILE_VALUES] = { 0,0,0,0,0 };
 
-char g_Win64Username[17] = { 0 };
-wchar_t g_Win64UsernameW[17] = { 0 };
+std::unordered_map<std::string, ServerAccessor*> Windows64Minecraft::serverAccessors;
+
 
 //#define MEMORY_TRACKING
 
@@ -104,14 +104,13 @@ static Minecraft* InitialiseMinecraftRuntime()
 
 	g_NetworkManager.Initialise();
 
-	for (int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; i++)
-	{
+	for (int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; i++) {
 		IQNet::m_player[i].m_smallId = static_cast<BYTE>(i);
 		IQNet::m_player[i].m_isRemote = false;
 		IQNet::m_player[i].m_isHostPlayer = (i == 0);
 		swprintf_s(IQNet::m_player[i].m_gamertag, 32, L"Player%d", i);
 	}
-	wcscpy_s(IQNet::m_player[0].m_gamertag, 32, g_Win64UsernameW);
+	wcscpy_s(IQNet::m_player[0].m_gamertag, 32, L"Host Player"); //todo: place some kinda message here
 
 	WinsockNetLayer::Initialize();
 
@@ -132,7 +131,7 @@ static Minecraft* InitialiseMinecraftRuntime()
 		return nullptr;
 
 	//app.InitGameSettings();
-	app.InitialiseTips();
+	//app.InitialiseTips();
 
 	return pMinecraft;
 }
@@ -144,6 +143,8 @@ static int HeadlessServerConsoleThreadProc(void* lpParameter)
 	std::string line;
 	while (!app.m_bShutdown)
 	{
+		//app.SetGlobalXuiAction(eAppAction_SaveGame);
+
 		if (!std::getline(std::cin, line))
 		{
 			if (std::cin.eof())
@@ -163,6 +164,7 @@ static int HeadlessServerConsoleThreadProc(void* lpParameter)
 		MinecraftServer* server = MinecraftServer::getInstance();
 		if (server != nullptr)
 		{
+			//app.SetXuiServerAction(1, eXuiServerAction_SaveGame);
 			server->handleConsoleInput(command, server);
 		}
 	}
@@ -170,34 +172,7 @@ static int HeadlessServerConsoleThreadProc(void* lpParameter)
 	return 0;
 }
 
-PlayerUID Windows64Minecraft::ResolvePersistentXuidFromName(const std::wstring& playerName)
-{
-	const unsigned __int64 fnvOffset = 14695981039346656037ULL;
-	const unsigned __int64 fnvPrime = 1099511628211ULL;
-	unsigned __int64 hash = fnvOffset;
-
-	for (size_t i = 0; i < playerName.length(); ++i)
-	{
-		unsigned short codeUnit = (unsigned short)playerName[i];
-		hash ^= (unsigned __int64)(codeUnit & 0xFF);
-		hash *= fnvPrime;
-		hash ^= (unsigned __int64)((codeUnit >> 8) & 0xFF);
-		hash *= fnvPrime;
-	}
-
-	// Namespace the hash away from legacy smallId-based values.
-	hash ^= 0x9E3779B97F4A7C15ULL;
-	hash |= 0x8000000000000000ULL;
-
-	if (hash == (unsigned __int64)INVALID_XUID)
-	{
-		hash ^= 0x0100000000000001ULL;
-	}
-
-	return (PlayerUID)hash;
-}
-
-void Windows64Minecraft::StartDedicatedServer() {
+void Windows64Minecraft::StartDedicatedServer(std::function<void(std::wstring, int)> enableProfiler) {
 	__int64 startupTime = System::currentRealTimeMillis();
 
 	Logger::Info("Loading Server Properties");
@@ -214,9 +189,6 @@ void Windows64Minecraft::StartDedicatedServer() {
 
 	const int port = g_Win64DedicatedServerPort > 0 ? g_Win64DedicatedServerPort : serverSettings.getInt(L"server-port", WIN64_NET_DEFAULT_PORT);
 	const std::string addressCombo = std::string(bindIp) + ":" + std::to_string(port);
-
-	strncpy_s(g_Win64Username, sizeof(g_Win64Username), "Player", _TRUNCATE);
-	MultiByteToWideChar(CP_ACP, 0, g_Win64Username, -1, g_Win64UsernameW, 17);
 
 	const Minecraft* pMinecraft = InitialiseMinecraftRuntime();
 	if (pMinecraft == nullptr)
@@ -293,7 +265,7 @@ void Windows64Minecraft::StartDedicatedServer() {
 	}
 
 	wchar_t filePath[MAX_PATH] = {};
-	_snwprintf_s(filePath, sizeof(filePath), _TRUNCATE, L"%sWindows64\\GameHDD\\saveData.ms", exePath);
+	_snwprintf_s(filePath, sizeof(filePath), _TRUNCATE, L"%GameSaves\\defaultWorld.ms", exePath);
 
 	File* saveFile = new File(filePath);
 
@@ -336,6 +308,19 @@ void Windows64Minecraft::StartDedicatedServer() {
 
 	Logger::Info(("Server Has Started In: " + std::to_string(finishedStartupTime)).c_str());
 
+	if (serverSettings.getBoolean(L"enable-profiler", false)) {
+		Logger::Info("Profiler is enabled. Use with caution as it may impact server performance.");
+
+		std::wstring defaultPassword = L"admin";
+		std::wstring password = serverSettings.getString(L"profiler-password", L"admin");
+
+		if (defaultPassword == password) {
+			Logger::Warning("Profiler password is set to the default value. Please change it in \"server.properties\" to secure your server.");
+		}
+
+		enableProfiler(password, serverSettings.getInt(L"profiler-port", 25570));
+	}
+
 	C4JThread* consoleThread = new C4JThread(&HeadlessServerConsoleThreadProc, nullptr, "Server console", 128 * 1024);
 	consoleThread->Run();
 
@@ -365,6 +350,13 @@ void Windows64Minecraft::StartDedicatedServer() {
 	MinecraftServer::HaltServer();
 	g_NetworkManager.LeaveGame(false);
 	return;
+}
+
+ServerAccessor* Windows64Minecraft::getServerAccessor(std::string name) {
+	auto itor = serverAccessors.find(name);
+	if (itor == serverAccessors.end()) return nullptr;
+
+	return itor->second;
 }
 
 #ifdef MEMORY_TRACKING

@@ -473,8 +473,6 @@ int CPlatformNetworkManagerStub::JoinGame(FriendSessionInfo* searchResult, int l
 	IQNet::m_player[0].m_resolvedXuid = Win64Xuid::GetLegacyEmbeddedHostXuid();
 	wcsncpy_s(IQNet::m_player[0].m_gamertag, 32, searchResult->data.hostName, _TRUNCATE);
 
-	WinsockNetLayer::StopDiscovery();
-
 	if (!WinsockNetLayer::JoinGame(hostIP, hostPort))
 	{
 		app.DebugPrintf("Win64 LAN: Failed to connect to %s:%d\n", hostIP, hostPort);
@@ -777,95 +775,7 @@ void CPlatformNetworkManagerStub::TickSearch()
 
 void CPlatformNetworkManagerStub::SearchForGames()
 {
-#ifdef _WINDOWS64
-	std::vector<Win64LANSession> lanSessions = WinsockNetLayer::GetDiscoveredSessions();
 
-	//THEY GET DELETED HERE DAMMIT
-	for (size_t i = 0; i < friendsSessions[0].size(); i++)
-		delete friendsSessions[0][i];
-	friendsSessions[0].clear();
-
-	for (size_t i = 0; i < lanSessions.size(); i++)
-	{
-		FriendSessionInfo* info = new FriendSessionInfo();
-		size_t nameLen = wcslen(lanSessions[i].hostName);
-		info->displayLabel = new wchar_t[nameLen + 1];
-		wcscpy_s(info->displayLabel, nameLen + 1, lanSessions[i].hostName);
-		info->displayLabelLength = static_cast<unsigned char>(nameLen);
-		info->displayLabelViewableStartIndex = 0;
-
-		info->data.netVersion = lanSessions[i].netVersion;
-		info->data.m_uiGameHostSettings = lanSessions[i].gameHostSettings;
-		info->data.texturePackParentId = lanSessions[i].texturePackParentId;
-		info->data.subTexturePackId = lanSessions[i].subTexturePackId;
-		info->data.isReadyToJoin = lanSessions[i].isJoinable;
-		info->data.isJoinable = lanSessions[i].isJoinable;
-		strncpy_s(info->data.hostIP, sizeof(info->data.hostIP), lanSessions[i].hostIP, _TRUNCATE);
-		info->data.hostPort = lanSessions[i].hostPort;
-		wcsncpy_s(info->data.hostName, XUSER_NAME_SIZE, lanSessions[i].hostName, _TRUNCATE);
-		info->data.playerCount = lanSessions[i].playerCount;
-		info->data.maxPlayers = lanSessions[i].maxPlayers;
-
-        info->sessionId = static_cast<uint64_t>(inet_addr(lanSessions[i].hostIP)) |
-                          static_cast<uint64_t>(lanSessions[i].hostPort) << 32;
-
-		friendsSessions[0].push_back(info);
-	}
-
-	if (std::FILE* file = std::fopen("servers.db", "rb")) {
-		char magic[4] = {};
-		if (std::fread(magic, 1, 4, file) == 4 && memcmp(magic, "MCSV", 4) == 0)
-		{
-			uint32_t version = 0, count = 0;
-			std::fread(&version, sizeof(uint32_t), 1, file);
-			std::fread(&count, sizeof(uint32_t), 1, file);
-
-			if (version == 1)
-			{
-				for (uint32_t s = 0; s < count; s++)
-				{
-					uint16_t ipLen = 0, port = 0, nameLen = 0;
-					if (std::fread(&ipLen, sizeof(uint16_t), 1, file) != 1) break;
-					if (ipLen == 0 || ipLen > 256) break;
-
-					char ipBuf[257] = {};
-					if (std::fread(ipBuf, 1, ipLen, file) != ipLen) break;
-					if (std::fread(&port, sizeof(uint16_t), 1, file) != 1) break;
-
-					if (std::fread(&nameLen, sizeof(uint16_t), 1, file) != 1) break;
-					if (nameLen > 256) break;
-
-					char nameBuf[257] = {};
-					if (nameLen > 0)
-					{
-						if (std::fread(nameBuf, 1, nameLen, file) != nameLen) break;
-					}
-
-					wstring wName = convStringToWstring(nameBuf);
-
-					FriendSessionInfo* info = new FriendSessionInfo();
-					size_t nLen = wName.length();
-					info->displayLabel = new wchar_t[nLen + 1];
-					wcscpy_s(info->displayLabel, nLen + 1, wName.c_str());
-					info->displayLabelLength = static_cast<unsigned char>(nLen);
-					info->displayLabelViewableStartIndex = 0;
-					info->data.isReadyToJoin = true;
-					info->data.isJoinable = true;
-					strncpy_s(info->data.hostIP, sizeof(info->data.hostIP), ipBuf, _TRUNCATE);
-					info->data.hostPort = port;
-					info->sessionId = static_cast<uint64_t>(inet_addr(ipBuf)) | static_cast<uint64_t>(port) << 32;
-					friendsSessions[0].push_back(info);
-				}
-			}
-		}
-		std::fclose(file);
-	}
-
-	m_searchResultsCount[0] = static_cast<int>(friendsSessions[0].size());
-
-	if (m_SessionsUpdatedCallback != nullptr)
-		m_SessionsUpdatedCallback(m_pSearchParam);
-#endif
 }
 
 int CPlatformNetworkManagerStub::SearchForGamesThreadProc( void* lpParameter )

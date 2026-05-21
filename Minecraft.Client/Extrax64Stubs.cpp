@@ -259,11 +259,7 @@ HRESULT IQNet::AddLocalPlayerByUserIndex(DWORD dwUserIndex) {
 	m_player[dwUserIndex].m_isRemote = false;
 	m_player[dwUserIndex].m_isHostPlayer = false;
 	// Give the joining player a distinct gamertag
-	extern wchar_t g_Win64UsernameW[17];
-	if (dwUserIndex == 0)
-		wcscpy_s(m_player[0].m_gamertag, 32, g_Win64UsernameW);
-	else
-		swprintf_s(m_player[dwUserIndex].m_gamertag, 32, L"%s(%d)", g_Win64UsernameW, dwUserIndex + 1);
+	wcscpy_s(m_player[0].m_gamertag, 32, L"Host Name");
 	if (dwUserIndex >= s_playerCount)
 		s_playerCount = dwUserIndex + 1;
 	return S_OK;
@@ -395,9 +391,8 @@ void IQNet::EndGame()
 		m_player[i].SetCustomDataValue(0);
 	}
 	// Restore local player 0's gamertag so re-joining works correctly
-	extern wchar_t g_Win64UsernameW[17];
 	m_player[0].m_isHostPlayer = true;
-	wcscpy_s(m_player[0].m_gamertag, 32, g_Win64UsernameW);
+	wcscpy_s(m_player[0].m_gamertag, 32, L"Host Name");
 }
 
 DWORD MinecraftDynamicConfigurations::GetTrialTime() { return DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME; }
@@ -669,7 +664,6 @@ char fakeGamerTag[32] = "PlayerName";
 void				SetFakeGamertag(char* name) { strcpy_s(fakeGamerTag, name); }
 #else
 char* C_4JProfile::GetGamertag(int iPad) {
-	extern char g_Win64Username[17];
 	if (iPad > 0 && iPad < XUSER_MAX_COUNT && IQNet::m_player[iPad].m_gamertag[0] != 0 &&
 		!IQNet::m_player[iPad].m_isRemote)
 	{
@@ -677,14 +671,13 @@ char* C_4JProfile::GetGamertag(int iPad) {
 		WideCharToMultiByte(CP_ACP, 0, IQNet::m_player[iPad].m_gamertag, -1, s_padGamertag[iPad], 17, nullptr, nullptr);
 		return s_padGamertag[iPad];
 	}
-	return g_Win64Username;
+	return "";
 }
 wstring C_4JProfile::GetDisplayName(int iPad) {
-	extern wchar_t g_Win64UsernameW[17];
 	if (iPad > 0 && iPad < XUSER_MAX_COUNT && IQNet::m_player[iPad].m_gamertag[0] != 0 &&
 		!IQNet::m_player[iPad].m_isRemote)
 		return IQNet::m_player[iPad].m_gamertag;
-	return g_Win64UsernameW;
+	return L"";
 }
 #endif
 bool				C_4JProfile::IsFullVersion() { return s_bProfileIsFullVersion; }

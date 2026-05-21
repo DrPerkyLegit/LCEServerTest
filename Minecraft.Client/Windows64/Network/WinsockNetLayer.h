@@ -99,10 +99,6 @@ public:
 	static void UpdateAdvertiseMaxPlayers(BYTE maxPlayers);
 	static void UpdateAdvertiseJoinable(bool joinable);
 
-	static bool StartDiscovery();
-	static void StopDiscovery();
-	static std::vector<Win64LANSession> GetDiscoveredSessions();
-
 	static int GetHostPort() { return s_hostGamePort; }
 
 private:
@@ -111,7 +107,6 @@ private:
 	static DWORD WINAPI ClientRecvThreadProc(LPVOID param);
 	static DWORD WINAPI SplitScreenRecvThreadProc(LPVOID param);
 	static DWORD WINAPI AdvertiseThreadProc(LPVOID param);
-	static DWORD WINAPI DiscoveryThreadProc(LPVOID param);
 
 	static SOCKET s_listenSocket;
 	static SOCKET s_hostConnectionSocket;
@@ -138,12 +133,6 @@ private:
 	static Win64LANBroadcast s_advertiseData;
 	static CRITICAL_SECTION s_advertiseLock;
 	static int s_hostGamePort;
-
-	static SOCKET s_discoverySock;
-	static HANDLE s_discoveryThread;
-	static volatile bool s_discovering;
-	static CRITICAL_SECTION s_discoveryLock;
-	static std::vector<Win64LANSession> s_discoveredSessions;
 
 	static CRITICAL_SECTION s_disconnectLock;
 	static std::vector<BYTE> s_disconnectedSmallIds;
