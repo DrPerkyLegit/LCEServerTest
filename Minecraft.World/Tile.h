@@ -7,6 +7,7 @@ using namespace std;
 
 class GrassTile;
 class LeafTile;
+class LeafTile2;
 class TallGrass;
 class DeadBushTile;
 class FireTile;
@@ -203,6 +204,8 @@ public:
 	static const int coalOre_Id = 16;
 	static const int treeTrunk_Id = 17;
 	static const int leaves_Id = 18;
+	static const int leaves2_Id = 161;
+
 	static const int sponge_Id = 19;
 	static const int glass_Id = 20;
 
@@ -288,6 +291,7 @@ public:
 	static const int diode_off_Id = 93;
 	static const int diode_on_Id = 94;
 	static const int stained_glass_Id = 95;
+	static const int tree2Trunk_Id = 162;
 	static const int trapdoor_Id = 96;
 	static const int monsterStoneEgg_Id = 97;
 	static const int stoneBrick_Id = 98;
@@ -384,6 +388,7 @@ public:
 	static Tile *coalOre;
 	static Tile *treeTrunk;
 	static LeafTile *leaves;
+	static LeafTile2 *leaves2;
 	static Tile *sponge;
 	static Tile *glass;
 	static Tile *lapisOre;
@@ -535,6 +540,10 @@ public:
 	static Tile *dropper;
 	static Tile *clayHardened_colored;
 	static Tile *stained_glass_pane;
+	
+
+	static Tile *tree2Trunk;
+
 
 	static Tile *hayBlock;
 	static Tile *woolCarpet;
