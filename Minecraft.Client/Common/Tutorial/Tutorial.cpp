@@ -508,7 +508,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad( iPad )
 	if(!isHintCompleted(e_Tutorial_Hint_Stone_Slab))
 	{
 		addHint(e_Tutorial_State_Gameplay, new LookAtTileHint(e_Tutorial_Hint_Stone_Slab, this, woodSlabItems, 2, -1, TreeTile::BIRCH_TRUNK ) );
-		addHint(e_Tutorial_State_Gameplay, new LookAtTileHint(e_Tutorial_Hint_Stone_Slab, this, woodSlabItems, 2, -1, TreeTile::DARK_TRUNK ) );
+		addHint(e_Tutorial_State_Gameplay, new LookAtTileHint(e_Tutorial_Hint_Stone_Slab, this, woodSlabItems, 2, -1, TreeTile::SPRUCE_TRUNK ) );
 	}
 
 	int redBrickItems[] = {Tile::redBrick_Id};

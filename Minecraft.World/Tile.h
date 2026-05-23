@@ -441,6 +441,11 @@ public:
 	static Tile *wallSign;
 	static Tile *lever;
 	static Tile *pressurePlate_stone;
+	static Tile *door_spruce;
+	static Tile *door_birch;
+	static Tile *door_jungle;
+	static Tile *door_acacia;
+	static Tile *door_dark;
 	static Tile *door_iron;
 	static Tile *pressurePlate_wood;
 	static Tile *redStoneOre;
@@ -499,7 +504,7 @@ public:
 	static Tile *redstoneLight_lit;
 
 	static Tile *stairs_sandstone;
-	static Tile *woodStairsDark;
+	static Tile *woodStairsSpruce;
 	static Tile *woodStairsBirch;
 	static Tile *woodStairsJungle;
 	static Tile *commandBlock;
@@ -549,6 +554,24 @@ public:
 	static Tile *woolCarpet;
 	static Tile *clayHardened;
 	static Tile *coalBlock;
+
+	static Tile* woodStairsAcacia;
+	static Tile* woodStairsDark;
+	static Tile* iron_trapdoor;
+
+
+	static Tile* spruceGate;
+	static Tile* birchGate;
+	static Tile* jungleGate;
+	static Tile* acaciaGate;
+	static Tile* darkGate;
+
+	static Tile* spruceFence;
+	static Tile* birchFence;
+	static Tile* jungleFence;
+	static Tile* acaciaFence;
+	static Tile* darkFence;
+
 
 	static void staticCtor();
 
