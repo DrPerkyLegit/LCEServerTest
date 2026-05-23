@@ -382,8 +382,8 @@ public:
 	static Item *frame;
 
 	// TU14
-	//static Item writingBook;
-	//static Item writtenBook;
+	static Item* writingBook;
+	static Item* writtenBook;
 
 	static Item *emerald;
 

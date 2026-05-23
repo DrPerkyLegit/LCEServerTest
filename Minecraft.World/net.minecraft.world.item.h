@@ -23,6 +23,8 @@
 #include "LeafTileItem.h"
 #include "MapItem.h"
 #include "MinecartItem.h"
+#include "WritingBookItem.h"
+#include "WrittenBookItem.h"
 //#include "PaintingItem.h"
 #include "PickaxeItem.h"
 #include "PistonTileItem.h"

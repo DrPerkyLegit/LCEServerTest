@@ -783,6 +783,8 @@ set(MINECRAFT_WORLD_SOURCES
   "WoolCarpetTile.cpp"
   "WoolTileItem.cpp"
   "WorkbenchTile.cpp"
+  "WrittenBookItem.cpp"
+  "WritingBookItem.cpp"
   "XZPacket.cpp"
   "Zombie.cpp"
   "ZoomLayer.cpp"

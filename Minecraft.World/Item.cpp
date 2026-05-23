@@ -215,8 +215,8 @@ Item *Item::skull = nullptr;
 
 
 // TU14
-//Item *Item::writingBook = nullptr;
-//Item *Item::writtenBook = nullptr;
+Item *Item::writingBook = nullptr;
+Item *Item::writtenBook = nullptr;
 
 Item *Item::emerald = nullptr;
 
@@ -461,8 +461,8 @@ void Item::staticCtor()
 	Item::skull =				(new SkullItem(141))												->setIconName(L"skull")->setDescriptionId(IDS_ITEM_SKULL)->setUseDescriptionId(IDS_DESC_SKULL);
 
 	// TU14
-	//Item::writingBook = (new WritingBookItem(130))->setIcon(11, 11)->setDescriptionId("writingBook");
-	//Item::writtenBook = (new WrittenBookItem(131))->setIcon(12, 11)->setDescriptionId("writtenBook");
+	Item::writingBook = (new WritingBookItem(130))->setIconName(L"writingBook")->setDescriptionId(-1)->setUseDescriptionId(-1)->setMaxStackSize(1);
+	Item::writtenBook = (new WrittenBookItem(131))->setIconName(L"writtenBook")->setDescriptionId(-1)->setUseDescriptionId(-1)->setMaxStackSize(1);
 
 	Item::emerald =				(new Item(132))														->setBaseItemTypeAndMaterial(eBaseItemType_treasure, eMaterial_emerald)->setIconName(L"emerald")->setDescriptionId(IDS_ITEM_EMERALD)->setUseDescriptionId(IDS_DESC_EMERALD);
 
