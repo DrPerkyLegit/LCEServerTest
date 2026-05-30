@@ -467,11 +467,12 @@ void Villager::addOffers(int addCount)
 	case PROFESSION_LIBRARIAN:
 		addItemForTradeIn(newOffers, Item::paper_Id, random, getRecipeChance(.8f));
 		addItemForTradeIn(newOffers, Item::book_Id, random, getRecipeChance(.8f));
-		//addItemForTradeIn(newOffers, Item::writtenBook_Id, random, getRecipeChance(0.3f));
+		addItemForTradeIn(newOffers, Item::writtenBook_Id, random, getRecipeChance(0.3f));
 		addItemForPurchase(newOffers, Tile::bookshelf_Id, random, getRecipeChance(.8f));
 		addItemForPurchase(newOffers, Tile::glass_Id, random, getRecipeChance(.2f));
 		addItemForPurchase(newOffers, Item::compass_Id, random, getRecipeChance(.2f));
 		addItemForPurchase(newOffers, Item::clock_Id, random, getRecipeChance(.2f));
+		addItemForPurchase(newOffers, Item::nameTag_Id, random, getRecipeChance(.2f));
 
 		if (random->nextFloat() < getRecipeChance(0.07f))
 		{
@@ -543,7 +544,7 @@ void Villager::staticCtor()
 	MIN_MAX_VALUES[Item::diamond_Id] = pair<int,int>(4, 6);
 	MIN_MAX_VALUES[Item::paper_Id] = pair<int,int>(24, 36);
 	MIN_MAX_VALUES[Item::book_Id] = pair<int,int>(11, 13);
-	//MIN_MAX_VALUES.insert(Item::writtenBook_Id, pair<int,int>(1, 1));
+	MIN_MAX_VALUES[Item::writtenBook_Id] = pair<int, int>(1, 1);
 	MIN_MAX_VALUES[Item::enderPearl_Id] = pair<int,int>(3, 4);
 	MIN_MAX_VALUES[Item::eyeOfEnder_Id] = pair<int,int>(2, 3);
 	MIN_MAX_VALUES[Item::porkChop_raw_Id] = pair<int,int>(14, 18);
@@ -602,6 +603,8 @@ void Villager::staticCtor()
 	MIN_MAX_PRICES[Item::chicken_cooked_Id] = pair<int,int>(-8, -6);
 	MIN_MAX_PRICES[Item::eyeOfEnder_Id] = pair<int,int>(7, 11);
 	MIN_MAX_PRICES[Item::arrow_Id] = pair<int,int>(-12, -8);
+
+	MIN_MAX_VALUES[Item::nameTag_Id] = pair<int, int>(20, 22);
 }
 
 /**
@@ -754,26 +757,22 @@ wstring Villager::getDisplayName()
 {
 	if (hasCustomName()) return getCustomName();
 
-	int name = IDS_VILLAGER;
 	switch(getProfession())
 	{
 	case PROFESSION_FARMER:
-		name = IDS_VILLAGER_FARMER;
-		break;
+		return L"Farmer";
 	case PROFESSION_LIBRARIAN:
-		name = IDS_VILLAGER_LIBRARIAN;
-		break;
+		return L"Librarian";
 	case PROFESSION_PRIEST:
-		name = IDS_VILLAGER_PRIEST;
-		break;
+		return L"Priest";
 	case PROFESSION_SMITH:
-		name = IDS_VILLAGER_SMITH;
-		break;
+		return L"Smith";
 	case PROFESSION_BUTCHER:
-		name = IDS_VILLAGER_BUTCHER;
-		break;
+		return L"Butcher";
+	default:
+		return L"Villager";
 	};
-	return app.GetString(name);
+
 }
 
 void Villager::thunderHit(const LightningBolt* lightningBolt)
