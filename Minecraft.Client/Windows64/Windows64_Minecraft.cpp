@@ -264,23 +264,24 @@ void Windows64Minecraft::StartDedicatedServer(std::function<void(std::wstring, i
 		*(lastSlash + 1) = L'\0'; // keep trailing slash
 	}
 
-	wchar_t filePath[MAX_PATH] = {};
-	_snwprintf_s(filePath, sizeof(filePath), _TRUNCATE, L"%GameSaves\\defaultWorld.ms", exePath);
+	{
+		wchar_t filePath[MAX_PATH] = {};
+		_snwprintf_s(filePath, sizeof(filePath), _TRUNCATE, L"%sGameSaves\\defaultWorld.ms", exePath);
 
-	File* saveFile = new File(filePath);
+		File* saveFile = new File(filePath);
 
-	__int64 fileSize = saveFile->length();
-	if (fileSize > 0) {
-		FileInputStream fis(*saveFile);
-		byteArray ba(fileSize);
-		fis.read(ba);
-		fis.close();
+		__int64 fileSize = saveFile->length();
+		if (fileSize > 0) {
+			FileInputStream fis(*saveFile);
+			byteArray ba(fileSize);
+			fis.read(ba);
+			fis.close();
 
-		LoadSaveDataThreadParam* saveData = new LoadSaveDataThreadParam(ba.data, ba.length, saveFile->getName());
+			LoadSaveDataThreadParam* saveData = new LoadSaveDataThreadParam(ba.data, ba.length, saveFile->getName());
 
-		param->saveData = saveData;
+			param->saveData = saveData;
+		}
 	}
-	
 
 	param->settings = app.GetGameHostOption(eGameHostOption_All);
 
