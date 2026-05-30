@@ -182,39 +182,7 @@ int PotionBrewing::getAppearanceValue(int brew)
 
 int PotionBrewing::getColorValue(vector<MobEffectInstance *> *effects)
 {
-	ColourTable *colourTable = Minecraft::GetInstance()->getColourTable();
-
-	int baseColor = colourTable->getColor( eMinecraftColour_Potion_BaseColour );
-
-	if (effects == nullptr || effects->empty())
-	{
-		return baseColor;
-	}
-
-	float red = 0;
-	float green = 0;
-	float blue = 0;
-	float count = 0;
-
-	//for (MobEffectInstance effect : effects){
-	for(auto& effect : *effects)
-	{
-		int potionColor = colourTable->getColor( MobEffect::effects[effect->getId()]->getColor() );
-
-		for (int potency = 0; potency <= effect->getAmplifier(); potency++)
-		{
-			red += static_cast<float>((potionColor >> 16) & 0xff) / 255.0f;
-			green += static_cast<float>((potionColor >> 8) & 0xff) / 255.0f;
-			blue += static_cast<float>((potionColor >> 0) & 0xff) / 255.0f;
-			count++;
-		}
-	}
-
-	red = (red / count) * 255.0f;
-	green = (green / count) * 255.0f;
-	blue = (blue / count) * 255.0f;
-
-	return static_cast<int>(red) << 16 | static_cast<int>(green) << 8 | static_cast<int>(blue);
+	return 0; //todo: reimplement this
 }
 
 bool PotionBrewing::areAllEffectsAmbient(vector<MobEffectInstance *> *effects)
