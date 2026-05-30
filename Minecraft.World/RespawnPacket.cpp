@@ -43,7 +43,8 @@ void RespawnPacket::handle(PacketListener *listener)
 void RespawnPacket::read(DataInputStream *dis) //throws IOException
 {
 	dimension = dis->readByte();
-	playerGameType = GameType::byId(dis->readByte());
+	int rawGameType = dis->readByte();
+	playerGameType = GameType::byId(rawGameType & ~0x8);
 	mapHeight = dis->readShort();
 	wstring typeName = readUtf(dis, 16);
 	m_pLevelType = LevelType::getLevelType(typeName);
@@ -54,7 +55,7 @@ void RespawnPacket::read(DataInputStream *dis) //throws IOException
 	mapSeed = dis->readLong();
 	difficulty = dis->readByte();
 	m_newSeaLevel = dis->readBoolean();
-	m_newEntityId = dis->readShort();
+	m_newEntityId = dis->readInt();
 #ifdef _LARGE_WORLDS
 	m_xzSize = dis->readShort();
 	m_hellScale = dis->read();
@@ -79,7 +80,7 @@ void RespawnPacket::write(DataOutputStream *dos) //throws IOException
 	dos->writeLong(mapSeed);
 	dos->writeByte(difficulty);
 	dos->writeBoolean(m_newSeaLevel);
-	dos->writeShort(m_newEntityId);
+	dos->writeInt(m_newEntityId);
 #ifdef _LARGE_WORLDS
 	dos->writeShort(m_xzSize);
 	dos->write(m_hellScale);
@@ -93,5 +94,5 @@ int RespawnPacket::getEstimatedSize()
 	{
 		length = static_cast<int>(m_pLevelType->getGeneratorName().length());
 	}
-	return 13+length;
+	return 13+length+2;
 }
